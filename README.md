@@ -70,6 +70,47 @@ src/
 └── assets/           # Images and other assets
 ```
 
+```
+src/
+├── assets/                # Images, fonts, and other assets
+│   ├── apple.png
+│   ├── download.png
+│   ├── facebook.png
+│   ├── google.png
+│   ├── images.d.ts
+│   └── fonts/
+│       ├── Italiana-Regular.ttf
+│       └── Ubuntu-Regular.ttf
+├── components/            # Reusable UI components
+│   ├── AppText.tsx
+│   ├── Button.tsx
+│   ├── Header.tsx
+│   ├── Logo.tsx
+│   └── ProductCard.tsx
+├── context/               # State management
+│   └── AppContext.tsx
+├── navigation/            # Navigation configuration
+│   └── AppNavigator.tsx
+├── screens/               # App screens
+│   ├── CartScreen.tsx
+│   ├── HomeScreen.tsx
+│   ├── LoginScreen.tsx
+│   ├── OffersScreen.tsx
+│   ├── OnboardingScreen.tsx
+│   ├── ProductDetailScreen.tsx
+│   ├── ProfileScreen.tsx
+│   ├── RegisterScreen.tsx
+│   └── WishlistScreen.tsx
+├── services/              # API services
+│   └── api.ts
+├── styles/                # Global styles
+│   ├── globalStyles.ts
+│   ├── index.ts
+│   └── typography.ts
+└── utils/                 # Utility functions
+    └── storage.ts
+```
+
 ## 📊 API Integration
 
 The app integrates with `https://dummyjson.com/products` to fetch product data. Products are filtered to show cosmetic/beauty-related items, with fallback mock data for better demonstration.
