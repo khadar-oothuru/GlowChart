@@ -48,27 +48,6 @@ Below are screenshots of the GlowCart app UI, labeled by screen:
 
 ## 🏗️ Project Structure
 
-```
-src/
-├── components/          # Reusable UI components
-│   ├── Button.tsx      # Custom button component
-│   ├── Header.tsx      # App header component
-│   └── ProductCard.tsx # Product card component
-├── context/            # State management
-│   └── AppContext.tsx  # Global app state
-├── navigation/         # Navigation configuration
-│   └── AppNavigator.tsx # Main navigation stack
-├── screens/           # App screens
-│   ├── OnboardingScreen.tsx
-│   ├── LoginScreen.tsx
-│   ├── RegisterScreen.tsx
-│   ├── HomeScreen.tsx
-│   ├── ProductDetailScreen.tsx
-│   └── ProfileScreen.tsx
-├── services/          # API services
-│   └── api.ts         # API integration
-└── assets/           # Images and other assets
-```
 
 ```
 src/
