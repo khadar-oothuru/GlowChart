@@ -109,7 +109,7 @@ const HomeScreen: React.FC = () => {
           onCartPress={handleCartPress}
         />
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FF69B4" />
+          <ActivityIndicator size="large" color="#000000ff" />
           <Text style={styles.loadingText}>Loading products...</Text>
         </View>
       </SafeAreaView>

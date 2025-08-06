@@ -13,6 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAppContext} from '../context/AppContext';
+import { typography, FONTS } from '../styles/typography';
 
 
 
@@ -133,13 +134,9 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   brandName: {
-    fontFamily: 'Ubuntu-Regular',
-    fontSize: 32,
+    ...typography.h2,
     color: '#C94F5C',
-    fontWeight: Platform.OS === 'ios' ? '400' : undefined, // Android custom fonts ignore fontWeight
-    fontStyle: 'normal',
     letterSpacing: -0.32,
-    lineHeight: 36,
     textAlign: 'center',
     includeFontPadding: false, // Android: better vertical alignment
   },
@@ -182,8 +179,8 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   cartBadgeText: {
+    ...typography.caption,
     color: '#FFF',
-    fontSize: 10,
     fontWeight: '600',
     textAlign: 'center',
   },
@@ -223,10 +220,9 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   searchInput: {
+    ...typography.body,
     flex: 1,
-    fontSize: 16,
     color: '#333',
-    fontWeight: '400',
     paddingVertical: 0,
     paddingLeft: 0,
     backgroundColor: 'transparent',

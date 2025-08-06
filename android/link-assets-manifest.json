@@ -80,6 +80,10 @@
     {
       "path": "src/assets/fonts/Italiana-Regular.ttf",
       "sha1": "4d008694c1df03573d6862558c11e315eedc4130"
+    },
+    {
+      "path": "src/assets/fonts/Ubuntu-Regular.ttf",
+      "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
     }
   ]
 }

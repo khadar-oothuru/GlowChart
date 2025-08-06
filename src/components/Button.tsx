@@ -7,6 +7,7 @@ import {
   TextStyle,
   ActivityIndicator,
 } from 'react-native';
+import { typography, FONTS } from '../styles/typography';
 
 interface ButtonProps {
   title: string;
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   text: {
-    fontWeight: '600',
+    ...typography.button,
   },
   primaryText: {
     color: '#FFF',
@@ -106,13 +107,13 @@ const styles = StyleSheet.create({
     color: '#FF69B4',
   },
   smallText: {
-    fontSize: 14,
+    ...typography.buttonSmall,
   },
   mediumText: {
-    fontSize: 16,
+    ...typography.button,
   },
   largeText: {
-    fontSize: 18,
+    ...typography.buttonLarge,
   },
   disabledText: {
     opacity: 0.7,
