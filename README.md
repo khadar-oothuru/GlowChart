@@ -23,6 +23,24 @@ A React Native CLI application for beauty and cosmetic products, built as part o
 - ✅ **Error handling** and loading states
 - ✅ **Responsive design** for different screen sizes
 
+
+## 📸 Screenshots
+
+Below are screenshots of the GlowCart app UI:
+
+<p align="center">
+  <img src="ScreenShots/Screenshot%202025-08-06%20210004.png" alt="Screenshot 1" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210013.png" alt="Screenshot 2" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210022.png" alt="Screenshot 3" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210047.png" alt="Screenshot 4" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210057.png" alt="Screenshot 5" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210109.png" alt="Screenshot 6" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210126.png" alt="Screenshot 7" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210132.png" alt="Screenshot 8" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210143.png" alt="Screenshot 9" width="250" />
+  <img src="ScreenShots/Screenshot%202025-08-06%20210157.png" alt="Screenshot 10" width="250" />
+</p>
+
 ## 🏗️ Project Structure
 
 ```
