@@ -24,22 +24,27 @@ A React Native CLI application for beauty and cosmetic products, built as part o
 - ✅ **Responsive design** for different screen sizes
 
 
+
 ## 📸 Screenshots
 
-Below are screenshots of the GlowCart app UI:
+Below are screenshots of the GlowCart app UI, labeled by screen:
 
-<p align="center">
-  <img src="ScreenShots/Screenshot%202025-08-06%20210004.png" alt="Screenshot 1" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210013.png" alt="Screenshot 2" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210022.png" alt="Screenshot 3" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210047.png" alt="Screenshot 4" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210057.png" alt="Screenshot 5" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210109.png" alt="Screenshot 6" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210126.png" alt="Screenshot 7" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210132.png" alt="Screenshot 8" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210143.png" alt="Screenshot 9" width="250" />
-  <img src="ScreenShots/Screenshot%202025-08-06%20210157.png" alt="Screenshot 10" width="250" />
-</p>
+<table>
+  <tr>
+    <td align="center"><b>Onboarding</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210004.png" alt="Onboarding Screen" width="200" /></td>
+    <td align="center"><b>Login</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210013.png" alt="Login Screen" width="200" /></td>
+    <td align="center"><b>Register</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210022.png" alt="Register Screen" width="200" /></td>
+    <td align="center"><b>Home</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210047.png" alt="Home Screen" width="200" /></td>
+    <td align="center"><b>Offers</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210057.png" alt="Offers Screen" width="200" /></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Wishlist</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210109.png" alt="Wishlist Screen" width="200" /></td>
+    <td align="center"><b>Product Details</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210126.png" alt="Product Details Screen 1" width="200" /></td>
+    <td align="center"><b>Product Details</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210132.png" alt="Product Details Screen 2" width="200" /></td>
+    <td align="center"><b>Cart</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210143.png" alt="Cart Screen" width="200" /></td>
+    <td align="center"><b>Profile</b><br><img src="ScreenShots/Screenshot%202025-08-06%20210157.png" alt="Profile Screen" width="200" /></td>
+  </tr>
+</table>
 
 ## 🏗️ Project Structure
 
