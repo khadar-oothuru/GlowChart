@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator,
   Modal,
   Pressable,
 } from 'react-native';
@@ -14,29 +13,13 @@ import {useNavigation} from '@react-navigation/native';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import {useAppContext} from '../context/AppContext';
-import {apiService} from '../services/api';
 
-const HomeScreen: React.FC = () => {
+const WishlistScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterVisible, setFilterVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const navigation = useNavigation<any>();
-  const {state, dispatch} = useAppContext();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch({type: 'SET_LOADING', payload: true});
-        const products = await apiService.fetchProducts();
-        dispatch({type: 'SET_PRODUCTS', payload: products});
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-        dispatch({type: 'SET_ERROR', payload: 'Failed to fetch products'});
-      }
-    };
-    
-    fetchData();
-  }, [dispatch]);
+  const {state} = useAppContext();
 
   const handleProductPress = (product: any) => {
     navigation.navigate('ProductDetail', {product});
@@ -46,10 +29,10 @@ const HomeScreen: React.FC = () => {
     navigation.navigate('Cart');
   };
 
-  // Get unique categories from products
-  const categories = ['All', ...Array.from(new Set(state.products.map((p: any) => p.category)))];
+  // Get unique categories from wishlist products
+  const categories = ['All', ...Array.from(new Set(state.wishlist.map((p: any) => p.category)))];
 
-  const filteredProducts = state.products.filter(product => {
+  const filteredProducts = state.wishlist.filter(product => {
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
@@ -59,17 +42,18 @@ const HomeScreen: React.FC = () => {
     <ProductCard product={item} onPress={() => handleProductPress(item)} />
   );
 
-
   const renderHeader = () => (
     <View style={styles.sectionHeader}>
       <View style={styles.sectionTitleContainer}>
-        <Text style={styles.sectionTitle}>Best Products</Text>
+        <Text style={styles.sectionTitle}>My Wishlist</Text>
         <Text style={styles.productCount}>{filteredProducts.length} products</Text>
       </View>
-      <TouchableOpacity style={styles.filterDropdown} onPress={() => setFilterVisible(true)}>
-        <Text style={styles.filterText}>{selectedCategory === 'All' ? 'Apply Filter' : selectedCategory}</Text>
-        <Text style={styles.dropdownIcon}>▼</Text>
-      </TouchableOpacity>
+      {state.wishlist.length > 0 && (
+        <TouchableOpacity style={styles.filterDropdown} onPress={() => setFilterVisible(true)}>
+          <Text style={styles.filterText}>{selectedCategory === 'All' ? 'Apply Filter' : selectedCategory}</Text>
+          <Text style={styles.dropdownIcon}>▼</Text>
+        </TouchableOpacity>
+      )}
       {/* Filter Modal */}
       <Modal
         visible={filterVisible}
@@ -100,21 +84,18 @@ const HomeScreen: React.FC = () => {
     </View>
   );
 
-  if (state.loading && state.products.length === 0) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Header
-          searchQuery={searchQuery}
-          onChangeSearch={setSearchQuery}
-          onCartPress={handleCartPress}
-        />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FF69B4" />
-          <Text style={styles.loadingText}>Loading products...</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
+  const renderEmptyWishlist = () => (
+    <View style={styles.emptyContainer}>
+      <Text style={styles.emptyTitle}>Your Wishlist is Empty</Text>
+      <Text style={styles.emptySubtitle}>Add products to your wishlist by tapping the heart icon</Text>
+      <TouchableOpacity
+        style={styles.browseButton}
+        onPress={() => navigation.navigate('Home')}
+      >
+        <Text style={styles.browseButtonText}>Browse Products</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -125,15 +106,19 @@ const HomeScreen: React.FC = () => {
       />
       <View style={styles.content}>
         {renderHeader()}
-        <FlatList
-          data={filteredProducts}
-          renderItem={renderProduct}
-          keyExtractor={item => item.id.toString()}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
-          contentContainerStyle={styles.productList}
-          showsVerticalScrollIndicator={false}
-        />
+        {state.wishlist.length === 0 ? (
+          renderEmptyWishlist()
+        ) : (
+          <FlatList
+            data={filteredProducts}
+            renderItem={renderProduct}
+            keyExtractor={item => item.id.toString()}
+            numColumns={2}
+            columnWrapperStyle={styles.row}
+            contentContainerStyle={styles.productList}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -148,7 +133,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
   },
-  // search bar styles removed, now handled by Header
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -225,27 +209,37 @@ const styles = StyleSheet.create({
   productList: {
     paddingBottom: 20,
   },
-  loadingContainer: {
+  emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
-  loadingText: {
-    marginTop: 16,
+  emptyTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  emptySubtitle: {
     fontSize: 16,
     color: '#666',
+    textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 24,
   },
-  headerIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
+  browseButton: {
+    backgroundColor: '#B84953',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
   },
-  iconButton: {
-    padding: 4,
-  },
-  headerIcon: {
-    fontSize: 20,
+  browseButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
-export default HomeScreen;
+export default WishlistScreen;

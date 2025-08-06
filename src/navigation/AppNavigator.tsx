@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Screens
 import OnboardingScreen from '../screens/OnboardingScreen';
@@ -11,6 +11,9 @@ import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import WishlistScreen from '../screens/WishlistScreen';
+import CartScreen from '../screens/CartScreen';
+import OffersScreen from '../screens/OffersScreen';
 
 // Context
 import {useAppContext} from '../context/AppContext';
@@ -28,9 +31,9 @@ const MainTabNavigator = () => {
           backgroundColor: '#FFF',
           borderTopWidth: 1,
           borderTopColor: '#000',
-          height: 75,
-          paddingBottom: 15,
-          paddingTop: 12,
+          height: 95,
+          paddingBottom: 25,
+          paddingTop: 18,
         },
         tabBarActiveTintColor: '#B84953',
         tabBarInactiveTintColor: '#999',
@@ -43,36 +46,56 @@ const MainTabNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <Icon name={focused ? 'home' : 'home-outline'} size={size} color={color} />
+          tabBarIcon: ({focused, size}) => (
+            <MaterialIcon
+              name={focused ? 'home' : 'home-outline'}
+              size={32}
+              color={focused ? '#B84953' : '#888'}
+            />
           ),
+          tabBarLabelStyle: { marginTop: 4 },
         }}
       />
       <Tab.Screen
         name="Offers"
-        component={ProfileScreen} // Temporary - can be replaced with OffersScreen
+        component={OffersScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <Icon name={focused ? 'pricetag' : 'pricetag-outline'} size={size} color={color} />
+          tabBarIcon: ({focused, size}) => (
+            <MaterialIcon
+              name={focused ? 'tag' : 'tag-outline'}
+              size={32}
+              color={focused ? '#B84953' : '#888'}
+            />
           ),
+          tabBarLabelStyle: { marginTop: 4 },
         }}
       />
       <Tab.Screen
         name="Wishlist"
-        component={ProfileScreen} // Temporary - can be replaced with WishlistScreen
+        component={WishlistScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <Icon name={focused ? 'heart' : 'heart-outline'} size={size} color={color} />
+          tabBarIcon: ({focused, size}) => (
+            <MaterialIcon
+              name={focused ? 'heart' : 'heart-outline'}
+              size={32}
+              color={focused ? '#B84953' : '#888'}
+            />
           ),
+          tabBarLabelStyle: { marginTop: 4 },
         }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <Icon name={focused ? 'person' : 'person-outline'} size={size} color={color} />
+          tabBarIcon: ({focused, size}) => (
+            <MaterialIcon
+              name={focused ? 'account-circle' : 'account-circle-outline'}
+              size={32}
+              color={focused ? '#B84953' : '#888'}
+            />
           ),
+          tabBarLabelStyle: { marginTop: 4 },
         }}
       />
     </Tab.Navigator>
@@ -102,6 +125,7 @@ const AppNavigator = () => {
           <>
             <Stack.Screen name="MainTabs" component={MainTabNavigator} />
             <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
+            <Stack.Screen name="Cart" component={CartScreen} />
           </>
         )}
       </Stack.Navigator>

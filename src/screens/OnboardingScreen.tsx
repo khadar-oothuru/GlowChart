@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   brandName: {
-    fontFamily: 'Italiana',
+    fontFamily: 'Ubuntu-Regular',
     fontSize: 60,
     fontWeight: '400',
     color: '#fff',

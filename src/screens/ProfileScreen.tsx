@@ -7,29 +7,57 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Image,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Header from '../components/Header';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useAppContext} from '../context/AppContext';
 
 interface ProfileItemProps {
-  icon: string;
+  iconName: string;
   title: string;
+  subtitle?: string;
   onPress?: () => void;
+  showArrow?: boolean;
+  isLast?: boolean;
 }
 
-const ProfileItem: React.FC<ProfileItemProps> = ({icon, title, onPress}) => (
-  <TouchableOpacity style={styles.profileItem} onPress={onPress}>
+const ProfileItem: React.FC<ProfileItemProps> = ({
+  iconName,
+  title,
+  subtitle,
+  onPress,
+  showArrow = true,
+  isLast = false,
+}) => (
+  <TouchableOpacity
+    style={[
+      styles.profileItem,
+      isLast && styles.profileItemLast,
+    ]}
+    onPress={onPress}
+    activeOpacity={0.7}
+  >
     <View style={styles.profileItemLeft}>
-      <Text style={styles.profileItemIcon}>{icon}</Text>
-      <Text style={styles.profileItemTitle}>{title}</Text>
+      <MaterialIcon
+        name={iconName}
+        size={24}
+        color={iconName === 'logout' ? '#888' : '#888'}
+        style={styles.profileItemIcon}
+      />
+      <View style={styles.profileItemText}>
+        <Text style={[styles.profileItemTitle, title === 'Log Out' && {color: '#FF6B6B'}]}>{title}</Text>
+        {subtitle && <Text style={styles.profileItemSubtitle}>{subtitle}</Text>}
+      </View>
     </View>
-    <Text style={styles.profileItemArrow}>›</Text>
+    {showArrow && (
+      <MaterialIcon name="chevron-right" size={28} color="#000" />
+    )}
   </TouchableOpacity>
 );
 
 const ProfileScreen: React.FC = () => {
-  const {state, dispatch} = useAppContext();
+  const {dispatch} = useAppContext();
   const navigation = useNavigation<any>();
 
   const handleLogout = () => {
@@ -56,67 +84,91 @@ const ProfileScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Profile" />
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.userInfoSection}>
-          <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>👤</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Profile</Text>
+        <TouchableOpacity style={styles.moreIconContainer} activeOpacity={0.7} onPress={() => {}}>
+          <MaterialIcon name="dots-horizontal" size={28} color="#000" />
+        </TouchableOpacity>
+      </View>
+      
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        {/* User Info Section */}
+        <View style={styles.userInfoCard}>
+          <View style={styles.userInfoLeft}>
+            <View style={styles.avatarContainer}>
+                    <Image
+                      source={{uri: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=2417&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}}
+                      style={styles.avatar}
+                      // onError handler removed: not applicable in functional component
+                    />
+            </View>
+            <View style={styles.userDetails}>
+              <Text style={styles.userName}>Olivia</Text>
+              <Text style={styles.userEmail}>Olivia@gmail.com</Text>
+            </View>
           </View>
-          <Text style={styles.userName}>{state.user?.name || 'User'}</Text>
-          <Text style={styles.userEmail}>{state.user?.email || 'user@example.com'}</Text>
+          <TouchableOpacity>
+            <MaterialIcon name="square-edit-outline" size={28} color="#000" />
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.menuSection}>
+        {/* First Menu Card: Address to Notifications */}
+        <View style={styles.menuContainer}>
+                <ProfileItem
+                  iconName="map-marker-outline"
+                  title="Address"
+                  subtitle="Manage your saved address"
+                  onPress={() => showComingSoon('Address Management')}
+                />
+                <ProfileItem
+                  iconName="package-variant-closed"
+                  title="Order History"
+                  subtitle="View your past orders"
+                  onPress={() => showComingSoon('Order History')}
+                />
           <ProfileItem
-            icon="📍"
-            title="Address"
-            onPress={() => showComingSoon('Address Management')}
-          />
-          <ProfileItem
-            icon="📦"
-            title="Order History"
-            onPress={() => showComingSoon('Order History')}
-          />
-          <ProfileItem
-            icon="🌐"
+            iconName="web"
             title="Language"
             onPress={() => showComingSoon('Language Settings')}
           />
           <ProfileItem
-            icon="🔔"
+            iconName="bell-outline"
             title="Notifications"
             onPress={() => showComingSoon('Notification Settings')}
+            isLast={true}
           />
         </View>
 
-        <View style={styles.menuSection}>
+        {/* Second Menu Card: Contact Us to Terms and Conditions */}
+        <View style={styles.menuContainer}>
           <ProfileItem
-            icon="📞"
+            iconName="phone-outline"
             title="Contact Us"
             onPress={() => showComingSoon('Contact Support')}
           />
           <ProfileItem
-            icon="❓"
+            iconName="help-circle-outline"
             title="Get Help"
             onPress={() => showComingSoon('Help Center')}
           />
           <ProfileItem
-            icon="🔒"
+            iconName="shield-outline"
             title="Privacy Policy"
             onPress={() => showComingSoon('Privacy Policy')}
           />
-          <ProfileItem
-            icon="📋"
-            title="Terms & Conditions"
-            onPress={() => showComingSoon('Terms & Conditions')}
-          />
-        </View>
-
-        <View style={styles.logoutSection}>
-          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-            <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
+        <ProfileItem
+          iconName="file-document-outline"
+          title="Terms and Conditions"
+          onPress={() => showComingSoon('Terms & Conditions')}
+        />
+        <ProfileItem
+          iconName="logout"
+          title="Log Out"
+          onPress={handleLogout}
+          showArrow={false}
+          isLast={true}
+        />
+      </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -125,43 +177,76 @@ const ProfileScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F8F8',
+    backgroundColor: '#FFEDE8',
   },
-  content: {
-    flexGrow: 1,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 40,
     paddingBottom: 20,
+    backgroundColor: '#FFEDE8',
   },
-  userInfoSection: {
+  moreIconContainer: {
     backgroundColor: '#FFF',
+    borderRadius: 28,
+    width: 56,
+    height: 56,
     alignItems: 'center',
-    paddingVertical: 30,
-    marginBottom: 20,
-  },
-  avatarContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#FFE4E6',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
+    marginLeft: 12,
   },
-  avatarText: {
-    fontSize: 32,
-  },
-  userName: {
+  headerTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#333',
+    color: '#000',
+  },
+  scrollView: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  userInfoCard: {
+    backgroundColor: '#FFF',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 10, // reduced from 20
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // No shadow or elevation for flat look
+  },
+  userInfoLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  avatarContainer: {
+    marginRight: 16,
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  userDetails: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000',
     marginBottom: 4,
   },
   userEmail: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
   },
-  menuSection: {
+  menuContainer: {
     backgroundColor: '#FFF',
-    marginBottom: 20,
+    borderRadius: 16,
+    marginBottom: 16, // reduced from 30
+    // No shadow or elevation for flat look
   },
   profileItem: {
     flexDirection: 'row',
@@ -170,7 +255,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: '#F5F5F5',
+  },
+  profileItemLast: {
+    borderBottomWidth: 0,
   },
   profileItemLeft: {
     flexDirection: 'row',
@@ -178,33 +266,45 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   profileItemIcon: {
-    fontSize: 20,
     marginRight: 16,
+  },
+  profileItemText: {
+    flex: 1,
   },
   profileItemTitle: {
     fontSize: 16,
-    color: '#333',
     fontWeight: '500',
+    color: '#000',
+    marginBottom: 2,
   },
-  profileItemArrow: {
-    fontSize: 20,
-    color: '#CCC',
-    fontWeight: '300',
+  profileItemSubtitle: {
+    fontSize: 14,
+    color: '#666',
   },
-  logoutSection: {
-    paddingHorizontal: 20,
-    marginTop: 20,
-  },
-  logoutButton: {
-    backgroundColor: '#FF4444',
-    borderRadius: 12,
-    paddingVertical: 16,
+  logoutContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#FFF',
+    borderRadius: 16,
+    marginBottom: 30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  logoutIcon: {
+    marginRight: 12,
   },
   logoutText: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#FFF',
+    fontWeight: '500',
+    color: '#FF6B6B',
   },
 });
 

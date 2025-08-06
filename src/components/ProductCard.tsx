@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   View,
@@ -7,115 +8,160 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import {Product} from '../context/AppContext';
+import { Product, useAppContext } from '../context/AppContext';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface ProductCardProps {
   product: Product;
   onPress: () => void;
 }
 
-const {width} = Dimensions.get('window');
-const CARD_WIDTH = (width - 48) / 2; // 2 cards per row with 16px margin on each side
 
-const ProductCard: React.FC<ProductCardProps> = ({product, onPress}) => {
+const CARD_WIDTH = 179;
+const CARD_HEIGHT = 237;
+
+const pastelColors = [
+  // Muted browns
+  '#BFA6A0', '#A89F91', '#C9B7A7',
+  // Muted pinks
+  '#E7C6C2', '#D8A7B1', '#CDB4C5',
+  // Muted grays
+  '#D3D3D3', '#B0A8B9', '#B8B8B8',
+  // Muted gradients (as fallback solid colors, since gradients need extra work)
+  'linear-gradient(135deg, #BFA6A0 0%, #E7C6C2 100%)',
+  'linear-gradient(135deg, #C9B7A7 0%, #B8B8B8 100%)',
+  'linear-gradient(135deg, #D8A7B1 0%, #B0A8B9 100%)',
+];
+
+function getPastelColor(title: string) {
+  // Pick a color based on product title hash
+  let hash = 0;
+  for (let i = 0; i < title.length; i++) {
+    hash = title.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return pastelColors[Math.abs(hash) % pastelColors.length];
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) => {
+  const { state, dispatch } = useAppContext();
+  
+  // Check if product is in wishlist
+  const isInWishlist = state.wishlist.some(item => item.id === product.id);
+  
+  const handleWishlistToggle = () => {
+    if (isInWishlist) {
+      dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: product.id });
+    } else {
+      dispatch({ type: 'ADD_TO_WISHLIST', payload: product });
+    }
+  };
+
+  let bgColor = getPastelColor(product.title);
+  // If the color is a gradient string, use a fallback muted color (since RN View doesn't support gradients directly)
+  if (bgColor.startsWith('linear-gradient')) {
+    bgColor = '#CDB4C5'; // fallback muted pink
+  }
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={styles.imageContainer}>
-        <Image source={{uri: product.thumbnail}} style={styles.image} />
-        <View style={styles.ratingContainer}>
-          <Text style={styles.rating}>★ {product.rating.toFixed(1)}</Text>
-        </View>
+    <TouchableOpacity style={[styles.container]} onPress={onPress}>
+      <View style={[styles.imageContainer, { backgroundColor: bgColor }]}> 
+        <Image source={{ uri: product.thumbnail }} style={styles.image} />
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.title} numberOfLines={2}>
+        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
           {product.title}
         </Text>
-        <Text style={styles.brand} numberOfLines={1}>
-          {product.brand}
-        </Text>
-        <View style={styles.priceContainer}>
+        <View style={styles.priceHeartRow}>
           <Text style={styles.price}>${product.price}</Text>
-          {product.discountPercentage && (
-            <Text style={styles.discount}>
-              -{product.discountPercentage.toFixed(0)}%
-            </Text>
-          )}
+          <View style={styles.heartSpacer} />
+          <TouchableOpacity onPress={handleWishlistToggle}>
+            <Icon 
+              name={isInWishlist ? "heart" : "heart-outline"} 
+              size={22} 
+              color={isInWishlist ? "#B84953" : "#888"} 
+              style={styles.heartIcon} 
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     width: CARD_WIDTH,
-    backgroundColor: '#FFF',
+    height: CARD_HEIGHT,
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    opacity: 1,
     marginBottom: 16,
+    borderWidth: 2,
+    borderColor: 'transparent',
+    // Removed absolute positioning so cards flow in grid/list
   },
   imageContainer: {
-    position: 'relative',
     height: 140,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
     overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FDE2E4',
+    margin: 12,
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  ratingContainer: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 10,
-  },
-  rating: {
-    color: '#FFF',
-    fontSize: 12,
-    fontWeight: '600',
+    width: 127,
+    height: 128,
+    resizeMode: 'contain',
+    borderRadius: 8,
+    backgroundColor: 'transparent',
+    opacity: 1,
   },
   contentContainer: {
-    padding: 12,
+    padding: 14,
+    backgroundColor: 'transparent',
   },
   title: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontFamily: 'Ubuntu-Regular',
+    fontWeight: '400',
+    fontStyle: 'normal',
+    fontSize: 16,
+    color: '#222',
+    marginBottom: 6,
+    lineHeight: 21,
+    letterSpacing: -0.32,
+    textAlign: 'center',
+  },
+  price: {
+    fontFamily: 'Ubuntu-Regular',
+    fontWeight: '400',
+    fontStyle: 'normal',
+    fontSize: 16,
     color: '#333',
-    marginBottom: 4,
-    lineHeight: 18,
+    lineHeight: 21,
+    letterSpacing: -0.32,
+    textAlign: 'center',
+    marginBottom: 0,
+    marginRight: 8,
   },
-  brand: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 8,
-  },
-  priceContainer: {
+  priceHeartRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 4,
+    marginTop: 0,
+    width: '100%',
+    paddingHorizontal: 2,
   },
-  price: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#FF69B4',
+  heartSpacer: {
+    flex: 1,
   },
-  discount: {
-    fontSize: 12,
-    color: '#4CAF50',
-    backgroundColor: '#E8F5E8',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
+  heartIcon: {
+    marginTop: -8,
+    marginRight: 2,
   },
 });
 
