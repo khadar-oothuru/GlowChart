@@ -4,11 +4,11 @@ A React Native CLI application for beauty and cosmetic products, built as part o
 
 <div align="center">
   <h2>🌟 Demo Video</h2>
-  <a href="ScreenShots/demo%20video.mp4">
-    <img src="ScreenShots/Screenshot%202025-08-06%20210004.png" alt="Demo Video" width="400" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); margin-bottom: 16px;"/>
+  <a href="https://www.youtube.com/watch?v=6-p2BLxPA3g" target="_blank">
+    <img src="https://img.youtube.com/vi/6-p2BLxPA3g/0.jpg" alt="GlowCart Demo Video" width="400" style="border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); margin-bottom: 16px;"/>
   </a>
   <br/>
-  <i>Click the image above to watch a quick walkthrough of the GlowCart app!</i>
+  <i>Click the image above to watch a quick walkthrough of the GlowCart app on YouTube!</i>
 </div>
 
 ## 🌟 Features
